@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Millennium Group - Website IA Explorer</title>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid #e0e0e0;
+            background: #fafafa;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            flex: 1;
+            min-width: 150px;
+            padding: 16px 20px;
+            text-align: center;
+            cursor: pointer;
+            border-right: 1px solid #e0e0e0;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .nav-item:last-child {
+            border-right: none;
+        }
+
+        .nav-item:hover {
+            background: #f0f0f0;
+            color: #1a1a1a;
+        }
+
+        .nav-item.active {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 10px;
+        }
+
+        .page-item {
+            background: #f9f9f9;
+            border-left: 4px solid #666;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-item:hover {
+            background: #f0f5fb;
+            transform: translateX(5px);
+        }
+
+        .page-item.expandable {
+            border-left: 4px solid #4caf50;
+        }
+
+        .page-item.expandable:hover {
+            background: #f0fdf4;
+        }
+
+        .page-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title .toggle-icon {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .page-item.expanded .page-title .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .page-url {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .page-content {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .page-item.expanded .page-content {
+            display: block;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #ddd;
+        }
+
+        .content-section {
+            margin-bottom: 8px;
+        }
+
+        .content-label {
+            font-weight: 500;
+            color: #333;
+            display: inline-block;
+            width: 90px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8e8e8;
+            color: #1a1a1a;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-right: 4px;
+            margin-top: 4px;
+        }
+
+        .sub-pages {
+            margin-top: 12px;
+            padding-left: 16px;
+            border-left: 2px solid #ddd;
+        }
+
+        .sub-page {
+            padding: 8px 0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .sub-page:before {
+            content: "→ ";
+            color: #666;
+            font-weight: bold;
+            margin-right: 4px;
+        }
+
+        .footer {
+            background: #333333;
+            padding: 40px 30px 20px;
+            border-top: 1px solid #555;
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h4 {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 8px;
+        }
+
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 12px;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-newsletter {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .footer-newsletter input {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            background: #444;
+            color: white;
+        }
+
+        .footer-newsletter input::placeholder {
+            color: #999;
+        }
+
+        .footer-newsletter button {
+            padding: 8px 16px;
+            background: white;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .footer-newsletter button:hover {
+            background: #ccc;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .footer-social a {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: #555;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 24px;
+            color: white;
+            transition: background 0.2s;
+        }
+
+        .footer-social a:hover {
+            background: white;
+            color: #333;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #555;
+            padding-top: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 11px;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+            }
+
+            .nav-item {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+                min-width: 100%;
+            }
+
+            .nav-item:last-child {
+                border-bottom: none;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <svg class="lucide" style="width: 32px; height: 32px; margin: 0 auto 10px; color: white;" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+            <h1>Millennium Group Website IA</h1>
+            <p>Click any navigation item to explore the site structure</p>
+        </header>
+
+        <div class="nav-bar">
+            <div class="nav-item active" onclick="showSection('home')">Home</div>
+            <div class="nav-item" onclick="showSection('about')">About Us</div>
+            <div class="nav-item" onclick="showSection('businesses')">Our Businesses</div>
+            <div class="nav-item" onclick="showSection('blog')">Blog</div>
+            <div class="nav-item" onclick="showSection('corporate')">Corporate</div>
+            <div class="nav-item" onclick="showSection('contact')">Contact</div>
+        </div>
+
+        <div class="content">
+            <!-- HOME SECTION -->
+            <div id="home" class="section active">
+                <div class="section-title"><i data-lucide="home" style="width: 24px; height: 24px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i>Home Page</div>
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        1. Hero Section
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Headline:</span> "One Group. Diverse Expertise"
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Subtitle:</span> "Leading Malaysian Conglomerate Since 1970"
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">CTA:</span>
+                            <span class="badge">Explore Our Businesses</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        2. Division Cards Section
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">4 Cards:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Motors (image: BMW car) → Links to /motors</div>
+                                <div class="sub-page">Property (image: Tribeca hotel) → Links to /property</div>
+                                <div class="sub-page">Lifestyle (image: Restaurant) → Links to /lifestyle</div>
+                                <div class="sub-page">Lendecor (image: Design) → Links to /lendecor</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        3. Featured News Section
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">3 Featured Boxes:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Latest press release</div>
+                                <div class="sub-page">Recent award</div>
+                                <div class="sub-page">Recent opening/milestone</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">CTA:</span>
+                            <span class="badge">View All News → /news</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        4. Why Choose Millennium Section
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">4 Stats Cards:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">50+ Years of Experience</div>
+                                <div class="sub-page">700+ Employees</div>
+                                <div class="sub-page">4 Diverse Divisions</div>
+                                <div class="sub-page">Multiple Premium Brands</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        5. Contact Form Section
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Form Type:</span> Quick Contact Form
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Fields:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Name (required)</div>
+                                <div class="sub-page">Email (required)</div>
+                                <div class="sub-page">Phone (optional)</div>
+                                <div class="sub-page">Which division? (Dropdown: Motors, Property, Lifestyle, Lendecor)</div>
+                                <div class="sub-page">Message (textarea)</div>
+                                <div class="sub-page">Submit button</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">CTA:</span>
+                            <span class="badge">Get In Touch</span>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Design Notes:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Centered, visible section above footer</div>
+                                <div class="sub-page">Auto-routes inquiry to correct division</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABOUT SECTION -->
+            <div id="about" class="section">
+                <div class="section-title"><i data-lucide="info" style="width: 24px; height: 24px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i>About Us</div>
+                
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        About - Company Story
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/about/our-story</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Founder story (Bryan Wong)</div>
+                                <div class="sub-page">History timeline (1970-2026)</div>
+                                <div class="sub-page">Vision & Mission statements</div>
+                                <div class="sub-page">Core values</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        About - Leadership Team
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/about/leadership</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Bryan Wong (Group MD) - Photo & bio</div>
+                                <div class="sub-page">Other key leaders by division</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        About - Award & Recognition
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/about/awards</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Major awards won by division</div>
+                                <div class="sub-page">Awards by year (2024, 2023, 2022, etc.)</div>
+                                <div class="sub-page">Industry recognition and certifications</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        About - Corporate Governance
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/about/corporate-governance</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Board of Directors composition</div>
+                                <div class="sub-page">Corporate policies and procedures</div>
+                                <div class="sub-page">Compliance and regulatory standards</div>
+                                <div class="sub-page">Risk management framework</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        About - Sustainability & CSR
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/about/sustainability</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Environmental commitments and initiatives</div>
+                                <div class="sub-page">CSR programs and community involvement</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OUR BUSINESSES SECTION -->
+            <div id="businesses" class="section">
+                <div class="section-title"><i data-lucide="briefcase" style="width: 24px; height: 24px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i>Our Businesses</div>
+
+                <div class="page-item expandable" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        <span><i data-lucide="car" style="width: 18px; height: 18px; margin-right: 8px; display: inline-block; vertical-align: middle;"></i>Motors Division</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/motors</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Sub-pages:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Brand Portfolio (BMW, MINI, Mazda, Mitsubishi, BYD, Ford, Denza) - Links to individual sites</div>
+                                <div class="sub-page">Showrooms (KL North, Seremban, Kuantan, Batu Pahat, Terengganu)</div>
+                                <div class="sub-page">Services (Sales, After-Sales, Autocare, EV Charging)</div>
+                                <div class="sub-page">Awards & Recognition</div>
+                                <div class="sub-page">Contact Form (Test Drive Inquiry)</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Contact Form Fields:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Name, Email, Phone (all required)</div>
+                                <div class="sub-page">Interested Brand (Dropdown: BMW, MINI, Mazda, Mitsubishi, BYD, Ford, Denza)</div>
+                                <div class="sub-page">Preferred Showroom (Dropdown: KL North, Seremban, Kuantan, Batu Pahat, Terengganu)</div>
+                                <div class="sub-page">Message/Notes (optional)</div>
+                                <div class="sub-page">CTA Button: "Book Test Drive" or "Get More Info"</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Stats:</span>
+                            <span class="badge">24 Showrooms</span>
+                            <span class="badge">7 Brands</span>
+                            <span class="badge">5,500+ Cars Sold</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item expandable" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        <span><i data-lucide="building-2" style="width: 18px; height: 18px; margin-right: 8px; display: inline-block; vertical-align: middle;"></i>Property Division</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/property</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Sub-pages:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Tribeca Hotel (Booking CTA, Amenities, Room Types, Gallery)</div>
+                                <div class="sub-page">Special Offer: BMW Owner Discount 15%</div>
+                                <div class="sub-page">Developments (Current & Past Projects)</div>
+                                <div class="sub-page">Contact & Booking Form</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Contact Form Fields:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Name, Email, Phone (all required)</div>
+                                <div class="sub-page">Check-in Date (date picker)</div>
+                                <div class="sub-page">Check-out Date (date picker)</div>
+                                <div class="sub-page">Room Type Preference (Dropdown)</div>
+                                <div class="sub-page">Number of Guests (number input)</div>
+                                <div class="sub-page">Special Requests (textarea)</div>
+                                <div class="sub-page">CTA Button: "Reserve Now"</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Cross-link:</span>
+                            <span class="badge">BMW Rental Available</span>
+                            <span class="badge">Direct link to Tribeca booking system</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item expandable" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        <span><i data-lucide="utensils" style="width: 18px; height: 18px; margin-right: 8px; display: inline-block; vertical-align: middle;"></i>Lifestyle Division</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/lifestyle</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Sub-pages:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Sarastro Restaurant (Menu, Location, Reservation Form)</div>
+                                <div class="sub-page">Millennium Lounge (Hours, Location, Reservation Form)</div>
+                                <div class="sub-page">Kajang Arms (Hours, Location, Reservation Form)</div>
+                                <div class="sub-page">Wellness Services (Inquiry Form)</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Contact Form Fields (Restaurant):</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Name, Email, Phone (all required)</div>
+                                <div class="sub-page">Preferred Restaurant (Dropdown: Sarastro, Millennium Lounge, Kajang Arms)</div>
+                                <div class="sub-page">Preferred Date (date picker)</div>
+                                <div class="sub-page">Preferred Time (time picker)</div>
+                                <div class="sub-page">Number of Guests (number input)</div>
+                                <div class="sub-page">Special Requests/Dietary (textarea)</div>
+                                <div class="sub-page">CTA Button: "Reserve Table"</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Cross-link:</span>
+                            <span class="badge">BMW Owner Dining Discount</span>
+                            <span class="badge">Tribeca Guest Spa Discount</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item expandable" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        <span><i data-lucide="sofa" style="width: 18px; height: 18px; margin-right: 8px; display: inline-block; vertical-align: middle;"></i>Lendecor Division</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/lendecor</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Sub-pages:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Products (Wood Panels, Furniture Collections, Gallery)</div>
+                                <div class="sub-page">Design Services (JUSS) - Portfolio & Case Studies</div>
+                                <div class="sub-page">Manufacturing (Facilities, Certifications, Capabilities)</div>
+                                <div class="sub-page">Export Markets (International Presence)</div>
+                                <div class="sub-page">Inquiry Form</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Contact Form Fields:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Name, Email, Company, Phone (all required)</div>
+                                <div class="sub-page">Inquiry Type (Dropdown: Product Purchase, Design Services, Manufacturing, Export)</div>
+                                <div class="sub-page">Project Description (textarea)</div>
+                                <div class="sub-page">Budget Range (optional)</div>
+                                <div class="sub-page">Timeline (optional)</div>
+                                <div class="sub-page">CTA Button: "Request Quote" or "Schedule Consultation"</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Cross-link:</span>
+                            <span class="badge">BMW Showroom Interiors</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOG SECTION -->
+            <div id="blog" class="section">
+                <div class="section-title"><i data-lucide="edit-3" style="width: 24px; height: 24px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i>Blog</div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        Blog Home
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/blog</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Blog home listing all posts (paginated, 10 per page)</div>
+                                <div class="sub-page">Category filter (Motors, Property, Lifestyle, Lendecor)</div>
+                                <div class="sub-page">Search functionality</div>
+                                <div class="sub-page">Featured/Latest posts section</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        Individual Blog Posts
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/blog/post-title/</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content Structure:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Post title (H1), author, date, reading time</div>
+                                <div class="sub-page">Featured image</div>
+                                <div class="sub-page">2,000-3,000 word body content</div>
+                                <div class="sub-page">Relevant section CTAs (book test drive, reserve hotel, etc.)</div>
+                                <div class="sub-page">Related articles sidebar (3-4 other posts)</div>
+                                <div class="sub-page">Social share buttons</div>
+                                <div class="sub-page">Newsletter signup</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Example Topics (Year 1):</span>
+                            <span class="badge">Best BMW Models</span>
+                            <span class="badge">EV Charging Guide</span>
+                            <span class="badge">Tribeca Staycation</span>
+                            <span class="badge">Mazda vs Toyota</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CORPORATE SECTION -->
+            <div id="corporate" class="section">
+                <div class="section-title"><i data-lucide="newspaper" style="width: 24px; height: 24px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i>Corporate</div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        News & Press Releases
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/corporate/news</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Latest news/press releases (by date)</div>
+                                <div class="sub-page">Archive by year</div>
+                                <div class="sub-page">Filter by division</div>
+                                <div class="sub-page">Media contact form</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        Media Coverage
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/corporate/media-coverage</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Links to external mentions (Paultan, TheEdge, etc.)</div>
+                                <div class="sub-page">Press clips and articles</div>
+                                <div class="sub-page">Media archives</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        Careers
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/corporate/careers</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Content:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Why Work at Millennium (company culture, benefits)</div>
+                                <div class="sub-page">Job listings by division</div>
+                                <div class="sub-page">Application form / Apply button</div>
+                                <div class="sub-page">Internship opportunities</div>
+                                <div class="sub-page">Company benefits overview</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT SECTION -->
+            <div id="contact" class="section">
+                <div class="section-title"><i data-lucide="phone" style="width: 24px; height: 24px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i>Contact & Locations</div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        Main Contact Form
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/contact</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Form Type:</span> General Inquiry Form
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Fields:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Name (required)</div>
+                                <div class="sub-page">Email (required)</div>
+                                <div class="sub-page">Phone (required)</div>
+                                <div class="sub-page">Which Division? (Dropdown: Motors, Property, Lifestyle, Lendecor, General)</div>
+                                <div class="sub-page">Preferred Showroom/Location (if Motors selected)</div>
+                                <div class="sub-page">Inquiry Type (Dropdown: Sales, Service, Booking, Partnership, Other)</div>
+                                <div class="sub-page">Message (textarea - required)</div>
+                                <div class="sub-page">Newsletter Opt-in (checkbox)</div>
+                                <div class="sub-page">Submit button</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Form Behavior:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Auto-routes inquiry to correct division/team</div>
+                                <div class="sub-page">Sends confirmation email to user</div>
+                                <div class="sub-page">Internal notification to relevant department</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        Locations Directory
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/contact/locations</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Locations Listed:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Motors Showrooms (5): KL North, Seremban, Kuantan, Batu Pahat, Terengganu</div>
+                                <div class="sub-page">For each: Address, Phone, Hours, Map, Quick Links</div>
+                                <div class="sub-page">Tribeca Hotel (KL): Address, Phone, Website Link, Map</div>
+                                <div class="sub-page">F&B Outlets (3): Sarastro, Millennium Lounge, Kajang Arms</div>
+                                <div class="sub-page">Lendecor Head Office: Address, Phone, Hours</div>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <span class="content-label">Features:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Interactive map showing all locations</div>
+                                <div class="sub-page">Click location → Shows details in sidebar</div>
+                                <div class="sub-page">Get Directions button (links to Google Maps)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-item" onclick="toggleExpand(this)">
+                    <div class="page-title">
+                        Website Sitemap
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="page-url">millennium-group.my/sitemap</div>
+                    <div class="page-content">
+                        <div class="content-section">
+                            <span class="content-label">Home</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">millennium-group.my/</div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <span class="content-label">About Us</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">millennium-group.my/about/our-story</div>
+                                <div class="sub-page">millennium-group.my/about/leadership</div>
+                                <div class="sub-page">millennium-group.my/about/awards</div>
+                                <div class="sub-page">millennium-group.my/about/corporate-governance</div>
+                                <div class="sub-page">millennium-group.my/about/sustainability</div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <span class="content-label">Our Businesses</span>
+                            <div class="sub-pages">
+                                <div class="sub-page"><strong>Motors</strong></div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/motors</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/motors/brands</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/motors/showrooms</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/motors/services</div>
+                                
+                                <div class="sub-page"><strong>Property</strong></div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/property</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/property/tribeca-hotel</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/property/developments</div>
+                                
+                                <div class="sub-page"><strong>Lifestyle</strong></div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/lifestyle</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/lifestyle/dining</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/lifestyle/wellness</div>
+                                
+                                <div class="sub-page"><strong>Lendecor</strong></div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/lendecor</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/lendecor/products</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/lendecor/design-services</div>
+                                <div class="sub-page" style="margin-left: 16px;">millennium-group.my/lendecor/manufacturing</div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <span class="content-label">Blog</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">millennium-group.my/blog</div>
+                                <div class="sub-page">millennium-group.my/blog/[post-title]/</div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <span class="content-label">Corporate</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">millennium-group.my/corporate/news</div>
+                                <div class="sub-page">millennium-group.my/corporate/media-coverage</div>
+                                <div class="sub-page">millennium-group.my/corporate/careers</div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <span class="content-label">Contact & Locations</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">millennium-group.my/contact</div>
+                                <div class="sub-page">millennium-group.my/contact/locations</div>
+                                <div class="sub-page">millennium-group.my/sitemap</div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <span class="content-label">Legal & Resources</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">millennium-group.my/privacy-policy</div>
+                                <div class="sub-page">millennium-group.my/terms-of-service</div>
+                                <div class="sub-page">millennium-group.my/sitemap.xml (for search engines)</div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <span class="content-label">Page Features:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Complete hierarchical sitemap of all pages</div>
+                                <div class="sub-page">All URLs listed for reference</div>
+                                <div class="sub-page">Organized by section</div>
+                                <div class="sub-page">Easy to scan - customer knows full site structure</div>
+                                <div class="sub-page">Links to all major pages (for quick navigation)</div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <span class="content-label">Design Notes:</span>
+                            <div class="sub-pages">
+                                <div class="sub-page">Footer page with light background</div>
+                                <div class="sub-page">Column layout: 3-4 columns on desktop</div>
+                                <div class="sub-page">Stacks vertically on mobile</div>
+                                <div class="sub-page">Clear hierarchy with bold section headings</div>
+                                <div class="sub-page">All URLs clickable for easy navigation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-content">
+                <!-- Column 1: About -->
+                <div class="footer-column">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="#about">Our Story</a></li>
+                        <li><a href="#about">Leadership</a></li>
+                        <li><a href="#about">Awards</a></li>
+                        <li><a href="#about">Corporate Governance</a></li>
+                        <li><a href="#about">Sustainability</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 2: Business -->
+                <div class="footer-column">
+                    <h4>Business</h4>
+                    <ul>
+                        <li><a href="#businesses">Motors</a></li>
+                        <li><a href="#businesses">Property</a></li>
+                        <li><a href="#businesses">Lifestyle</a></li>
+                        <li><a href="#businesses">Lendecor</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Resources -->
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#corporate">News & Press</a></li>
+                        <li><a href="#corporate">Careers</a></li>
+                        <li><a href="#corporate">Media Coverage</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Support -->
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#contact">Locations</a></li>
+                        <li><a href="#contact">Sitemap</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 5: Connect -->
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <div class="footer-social">
+                        <a href="#" title="Facebook">f</a>
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="LinkedIn">in</a>
+                        <a href="#" title="YouTube">▶</a>
+                    </div>
+                    <h4 style="margin-top: 20px;">Newsletter</h4>
+                    <div class="footer-newsletter">
+                        <input type="email" placeholder="Your email">
+                        <button>Sign Up</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© Millennium Group Malaysia 2026. All rights reserved. | Powered by Millennium Group Digital</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Collapse all items when switching sections
+            const allPageItems = document.querySelectorAll('.page-item');
+            allPageItems.forEach(item => {
+                item.classList.remove('expanded');
+            });
+        }
+
+        function toggleExpand(element) {
+            element.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>
